@@ -2,7 +2,7 @@ package id.my.hendisantika.mongodbmultitenancy.service;
 
 import id.my.hendisantika.mongodbmultitenancy.domain.Employee;
 import id.my.hendisantika.mongodbmultitenancy.repository.EmployeeRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * To change this template use File | Settings | File Templates.
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;

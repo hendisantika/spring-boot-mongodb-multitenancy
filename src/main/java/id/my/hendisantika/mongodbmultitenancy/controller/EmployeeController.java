@@ -2,7 +2,7 @@ package id.my.hendisantika.mongodbmultitenancy.controller;
 
 import id.my.hendisantika.mongodbmultitenancy.domain.Employee;
 import id.my.hendisantika.mongodbmultitenancy.service.EmployeeService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
  * To change this template use File | Settings | File Templates.
  */
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @GetMapping(path = "/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") final String id) {

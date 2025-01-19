@@ -45,7 +45,7 @@ to allow child threads created from the main thread in our application to use sa
 Start the application and call the REST API to save employee for tenant_a -
 
 ```shell
-curl -X POST   http://localhost:8080/employee -H 'Content-Type: application/json' -H 'X-Tenant: tenant_a' -d '{"firstName":"ABC","lastName":"XYZ","age":30,"salary":345455}'
+curl -X POST   http://localhost:8080/api/employees -H 'Content-Type: application/json' -H 'X-Tenant: tenant_a' -d '{"firstName":"ABC","lastName":"XYZ","age":30,"salary":345455}'
 ```
 
 This should insert employee record for tenant_a.
@@ -53,7 +53,7 @@ This should insert employee record for tenant_a.
 Now call below API to confirm the behaviour-
 
 ```shell
-curl -X GET   http://localhost:8080/employee/6045fcc00c38b75e8d154933 -H 'Content-Type: application/json' -H 'X-Tenant: tenant_a'
+curl -X GET   http://localhost:8080/api/employees/6045fcc00c38b75e8d154933 -H 'Content-Type: application/json' -H 'X-Tenant: tenant_a'
 ```
 
 This should not return data which we inserted for tenant_a.

@@ -26,8 +26,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableConfigurationProperties(value = MultiTenantMongoProperties.class)
 @AutoConfigureBefore(MongoAutoConfiguration.class)
 @Configuration
-@EnableMongoRepositories(basePackages = {"com.sample"})
-@EntityScan(basePackages = {"com.sample"})
+@EnableMongoRepositories(basePackages = {"id.my.hendisantika.mongodbmultitenancy"})
+@EntityScan(basePackages = {"id.my.hendisantika.mongodbmultitenancy"})
 public class MultiTenantMongoAutoConfiguration {
     @Bean
     public MultiTenantMongoConfig multiTenantMongoConfig(final MultiTenantMongoProperties multiTenantMongoProperties) {

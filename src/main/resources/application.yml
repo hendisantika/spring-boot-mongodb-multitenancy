@@ -16,3 +16,7 @@ config:
             database: tenant_b_db
 server:
   port: 8080
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/employees

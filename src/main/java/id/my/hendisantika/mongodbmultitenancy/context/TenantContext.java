@@ -30,4 +30,8 @@ public class TenantContext {
     public static void setTenantId(String tenantId) {
         threadLocal.set(tenantId);
     }
+
+    public static String getTenantId() {
+        return threadLocal.get();
+    }
 }

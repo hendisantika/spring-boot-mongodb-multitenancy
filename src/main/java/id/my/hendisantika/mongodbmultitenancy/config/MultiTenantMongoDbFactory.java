@@ -1,5 +1,9 @@
 package id.my.hendisantika.mongodbmultitenancy.config;
 
+import com.mongodb.client.MongoDatabase;
+import id.my.hendisantika.mongodbmultitenancy.context.TenantContext;
+import id.my.hendisantika.mongodbmultitenancy.exception.TenantNotFoundException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 /**
@@ -22,4 +26,19 @@ public class MultiTenantMongoDbFactory extends SimpleMongoClientDatabaseFactory 
         this.multiTenantMongoConfig = multiTenantMongoConfig;
     }
 
+    @Override
+    public MongoDatabase getMongoDatabase() throws DataAccessException {
+        final String tenant = TenantContext.getTenantId();
+        MongoDatabase database = null;
+        if (tenant != null) {
+            final MultiTenantMongoConfig.TenantMongoClient tenantMongoClient = multiTenantMongoConfig.getMultiTenantConfig().get(tenant);
+            if (tenantMongoClient == null) {
+                throw new TenantNotFoundException("Tenant " + tenant + " is not configured");
+            }
+            database = tenantMongoClient.getMongoClient().getDatabase(tenantMongoClient.getDatabase());
+        } else {
+            database = getMongoClient().getDatabase(DEFAULT_DB_INSTACE);
+        }
+        return database;
+    }
 }

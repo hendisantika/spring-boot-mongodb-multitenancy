@@ -24,9 +24,9 @@ import java.io.IOException;
  * Time: 16.58
  * To change this template use File | Settings | File Templates.
  */
-@AllArgsConstructor
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TenantFilter extends OncePerRequestFilter {
 
     private static final String TENANT_ID_HEADER = "X-Tenant";

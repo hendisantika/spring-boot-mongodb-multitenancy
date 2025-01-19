@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,17 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
  * To change this template use File | Settings | File Templates.
  */
 @RestController
+@RequestMapping("/api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping(path = "/employees/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") final String id) {
         return new ResponseEntity(employeeService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/employees")
+    @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody final Employee employee) {
         return new ResponseEntity(employeeService.save(employee), HttpStatus.CREATED);
     }

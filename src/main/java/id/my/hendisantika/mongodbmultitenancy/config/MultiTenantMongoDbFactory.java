@@ -16,4 +16,10 @@ public class MultiTenantMongoDbFactory extends SimpleMongoClientDatabaseFactory 
 
     public static final String DEFAULT_DB_INSTACE = "test";
     private final MultiTenantMongoConfig multiTenantMongoConfig;
+
+    public MultiTenantMongoDbFactory(final MultiTenantMongoConfig multiTenantMongoConfig, final MultiTenantMongoConfig.TenantMongoClient tenantMongoClient) {
+        super(tenantMongoClient.getMongoClient(), tenantMongoClient.getDatabase());
+        this.multiTenantMongoConfig = multiTenantMongoConfig;
+    }
+
 }

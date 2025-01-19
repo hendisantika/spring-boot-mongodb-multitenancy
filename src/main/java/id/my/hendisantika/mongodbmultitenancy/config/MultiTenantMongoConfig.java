@@ -1,6 +1,10 @@
 package id.my.hendisantika.mongodbmultitenancy.config;
 
+import com.mongodb.client.MongoClient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,4 +18,11 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class MultiTenantMongoConfig {
+    @Getter
+    @AllArgsConstructor
+    @ToString
+    public static class TenantMongoClient {
+        private MongoClient mongoClient;
+        private String database;
+    }
 }

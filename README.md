@@ -13,9 +13,17 @@ tenant’s data.
 There are three ways to achieve multi tenancy based on the degree of (physical) separation of the tenant’s data.
 
 1. **Database per Tenant**: Each Tenant has its own database and is isolated from other tenants.
+
+![Sample 1](img/sample1.png "Sample 1")
+
 2. **Shared Database**, Shared Schema: All Tenants share a database and. tables. Every table has a Column with the
    Tenant/client Identifier. Every query to database will have tenant/client identifier in it’s where clause.
+
+![Sample 2](img/sample2.png "Sample 2")
+
 3. **Shared Database**, Separate Schema: All Tenants share a single database, but have their own schemas and tables.
+
+![Sample 3](img/sample3.png "Sample 3")
 
 We will follow approach #1 in this solution.
 

@@ -41,4 +41,9 @@ public class MultiTenantMongoDbFactory extends SimpleMongoClientDatabaseFactory 
         }
         return database;
     }
+
+    @Override
+    public void destroy() throws Exception {
+        multiTenantMongoConfig.getMultiTenantConfig().values().forEach(mongo -> mongo.getMongoClient().close());
+    }
 }

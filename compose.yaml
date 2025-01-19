@@ -1,1 +1,24 @@
 services:
+  mongodb:
+    image: mongo:8.0.4
+    container_name: mongodb804A
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: yu71
+      MONGO_INITDB_ROOT_PASSWORD: 53cret
+      MONGO_INITDB_DATABASE: customers
+      MONGO_DB_USERNAME: yu71
+      MONGO_DB_PASSWORD: 53cret
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - main-network
+    command: [ "--bind_ip", "0.0.0.0" ]
+
+volumes:
+  mongo-data:
+networks:
+  main-network:
+#    external:
+#      name: liquibase-mongodb

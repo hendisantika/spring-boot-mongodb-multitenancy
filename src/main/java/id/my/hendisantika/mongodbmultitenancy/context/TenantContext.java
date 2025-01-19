@@ -27,4 +27,7 @@ public class TenantContext {
         }
     };
 
+    public static void setTenantId(String tenantId) {
+        threadLocal.set(tenantId);
+    }
 }

@@ -24,4 +24,8 @@ public class EmployeeService {
     public Employee findById(final String id) {
         return employeeRepository.findById(id).get();
     }
+
+    public Employee save(final Employee employee) {
+        return employeeRepository.save(employee);
+    }
 }

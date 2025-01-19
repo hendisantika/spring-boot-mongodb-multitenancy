@@ -58,4 +58,8 @@ public class MultiTenantMongoConfig {
             this.multiTenantConfig.put(multiTenant.getTenant(), tenantMongoClient);
         }
     }
+
+    public TreeMap<String, TenantMongoClient> getMultiTenantConfig() {
+        return multiTenantConfig;
+    }
 }

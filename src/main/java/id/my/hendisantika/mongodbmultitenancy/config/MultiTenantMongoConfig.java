@@ -3,6 +3,7 @@ package id.my.hendisantika.mongodbmultitenancy.config;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,10 @@ public class MultiTenantMongoConfig {
 
     public TreeMap<String, TenantMongoClient> getMultiTenantConfig() {
         return multiTenantConfig;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        multiTenantConfig.values().forEach(mongo -> mongo.getMongoClient().close());
     }
 }

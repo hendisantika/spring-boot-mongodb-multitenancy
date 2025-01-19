@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
@@ -29,5 +31,12 @@ public class MultiTenantMongoAutoConfiguration {
     @Bean
     public MultiTenantMongoConfig multiTenantMongoConfig(final MultiTenantMongoProperties multiTenantMongoProperties) {
         return new MultiTenantMongoConfig(multiTenantMongoProperties);
+    }
+
+    @Bean
+    @Primary
+    public MongoDatabaseFactory mongoDatabaseFactory(final MultiTenantMongoConfig multiTenantMongoConfig) {
+        final MultiTenantMongoConfig.TenantMongoClient tenantMongoClient = multiTenantMongoConfig.getMultiTenantConfig().firstEntry().getValue();
+        return new MultiTenantMongoDbFactory(multiTenantMongoConfig, tenantMongoClient);
     }
 }

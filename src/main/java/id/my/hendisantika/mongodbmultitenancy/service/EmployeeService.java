@@ -1,5 +1,6 @@
 package id.my.hendisantika.mongodbmultitenancy.service;
 
+import id.my.hendisantika.mongodbmultitenancy.domain.Employee;
 import id.my.hendisantika.mongodbmultitenancy.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,4 +20,8 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+
+    public Employee findById(final String id) {
+        return employeeRepository.findById(id).get();
+    }
 }

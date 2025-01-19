@@ -34,4 +34,8 @@ public class TenantContext {
     public static String getTenantId() {
         return threadLocal.get();
     }
+
+    public static void clear() {
+        threadLocal.remove();
+    }
 }

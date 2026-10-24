@@ -1,6 +1,26 @@
 # spring-boot-mongodb-multitenancy
 
+[![Java CI with Gradle](https://github.com/hendisantika/spring-boot-mongodb-multitenancy/actions/workflows/gradle.yml/badge.svg)](https://github.com/hendisantika/spring-boot-mongodb-multitenancy/actions/workflows/gradle.yml)
+![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-6DB33F?logo=springboot)
+![Gradle](https://img.shields.io/badge/Gradle-9.8.2-02303A?logo=gradle)
+![MongoDB](https://img.shields.io/badge/MongoDB-8.0-47A248?logo=mongodb)
+
 Multi-Tenancy implementation using Spring Boot + MongoDB
+
+### Tech Stack
+
+- Java 25 (Gradle toolchain)
+- Spring Boot 4.1.1 (Spring Web, Spring Data MongoDB)
+- Gradle 9.8.2 (wrapper included)
+- MongoDB 8.0
+- Lombok
+- Testcontainers 2 + JUnit 5 for integration tests
+
+### Prerequisites
+
+- JDK 25
+- Docker (for `compose.yaml` and for the Testcontainers-based tests)
 
 ### What is Multi tenancy?
 
@@ -50,6 +70,43 @@ TenantContext is the class which will store tenant information. This class is ha
 that each request/thread has access to its tenant information only. We have used variable of type InheritableThreadLocal
 to allow child threads created from the main thread in our application to use same tenantId of the Parent Thread.
 
+Tenants are configured in `src/main/resources/application.yml` under `config.multitenant.mongo.properties`. Each
+tenant gets its own `MongoClient` and database:
+
+```yaml
+config:
+  multitenant:
+    mongo:
+      enabled: true
+      properties:
+        - tenant: tenant_a
+          properties:
+            uri: "mongodb://localhost:27017/"
+            database: tenant_a_db
+        - tenant: tenant_b
+          properties:
+            uri: "mongodb://localhost:27017/"
+            database: tenant_b_db
+```
+
+`MultiTenantMongoDbFactory` reads the tenant from `TenantContext` and returns the matching database. Requests with an
+unknown tenant fail with `TenantNotFoundException`, and requests without the `X-Tenant` header are rejected by
+`TenantFilter`.
+
+### Running the application
+
+Start MongoDB with Docker Compose (Spring Boot's Docker Compose support also starts it automatically in development):
+
+```shell
+docker compose up -d
+```
+
+Run the application:
+
+```shell
+./gradlew bootRun
+```
+
 Start the application and call the REST API to save employee for tenant_a -
 
 ```shell
@@ -58,10 +115,28 @@ curl -X POST   http://localhost:8080/api/employees -H 'Content-Type: application
 
 This should insert employee record for tenant_a.
 
-Now call below API to confirm the behaviour-
+Now fetch it back using the `id` returned by the previous call:
 
 ```shell
 curl -X GET   http://localhost:8080/api/employees/6045fcc00c38b75e8d154933 -H 'Content-Type: application/json' -H 'X-Tenant: tenant_a'
 ```
 
-This should not return data which we inserted for tenant_a.
+This returns the employee for `tenant_a`. Calling the same endpoint with `-H 'X-Tenant: tenant_b'` does **not** return
+the record, because it lives in `tenant_a`'s database only.
+
+### Running the tests
+
+The integration test starts a MongoDB container with Testcontainers, configures two tenants against it, and verifies
+that data saved for one tenant is not visible to the other. Docker must be running.
+
+```shell
+./gradlew build
+```
+
+### CI and dependency updates
+
+- **GitHub Actions** (`.github/workflows/gradle.yml`) builds and tests the project on JDK 25 (Temurin) for every push
+  and pull request to `main`, and submits the dependency graph for Dependabot alerts.
+- **Dependabot** (`.github/dependabot.yml`) keeps Gradle dependencies, GitHub Actions and the MongoDB Docker image in
+  `compose.yaml` up to date. Related updates are grouped (Spring Boot, Testcontainers, minor/patch, Actions) and PRs
+  use conventional commit prefixes (`build(deps)`, `ci(deps)`).

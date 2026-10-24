@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: mongo:8.0.4
+    image: mongo:9.0.4
     container_name: mongodb804A
     ports:
       - "27017:27017"

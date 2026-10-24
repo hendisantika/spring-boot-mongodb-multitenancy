@@ -37,7 +37,7 @@ public class MultiTenantMongoDbFactory extends SimpleMongoClientDatabaseFactory 
             }
             database = tenantMongoClient.getMongoClient().getDatabase(tenantMongoClient.getDatabase());
         } else {
-            database = getMongoClient().getDatabase(DEFAULT_DB_INSTACE);
+            database = super.getMongoDatabase(DEFAULT_DB_INSTACE);
         }
         return database;
     }
